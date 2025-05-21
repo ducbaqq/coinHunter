@@ -1,0 +1,20 @@
+module.exports = {
+  RPC_ENDPOINT: process.env.RPC_ENDPOINT || 'https://api.mainnet-beta.solana.com', // Default to public RPC if not set
+  RAYDIUM_PROGRAM_ADDRESS: '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8',
+  VIRTUAL_BUDGET_SOL: 5,
+  TRADE_SIZE_SOL: 0.5,
+  MAX_CONCURRENT_POSITIONS: 10,
+  MIN_LIQUIDITY_SOL: 10,
+  MAX_POOL_AGE_MINUTES: 5,
+  PROFIT_TARGET_PERCENT: 0.15, // 15%
+  TRAILING_STOP_PERCENT: 0.05, // 5%
+  TRADE_TIME_LIMIT_MINUTES: 60,
+  RAYDIUM_FEE_PERCENT: 0.0025, // 0.25%
+  LOG_LEVEL: 'info',
+  ACTIVE_TRADES_FILE: 'active_trades.json',
+  COMPLETED_TRADES_FILE: 'completed_trades.json',
+  APP_LOG_FILE: 'app.log',
+  LOG_FILE_SIZE_MB: 10,
+  LOG_FILES_TO_RETAIN: 5,
+  PRICE_CHECK_INTERVAL_MS: 5000, // 5 seconds
+};
