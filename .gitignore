@@ -1,0 +1,14 @@
+# IDE specific files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Node modules at root level (if any)
+/node_modules
