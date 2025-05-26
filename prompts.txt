@@ -1,0 +1,91 @@
+Build a web-based Solana coin watcher and trader app that performs the following:
+
+Functionality Overview:
+	1.	User Input:
+
+	•	Accept one or more Solana token addresses (token mints) as input.
+	•	Upon input, the app should automatically invest a calculated amount into each token based on its liquidity and market cap (see formula below).
+
+	2.	Dynamic Investment Formula:
+
+	•	The app should calculate how much SOL to invest into each token by scoring its liquidity and market cap.
+	•	Define:
+	•	availableSol: the amount of SOL the wallet holds
+	•	tokenLiquidity: current token liquidity in USD
+	•	tokenMarketCap: current token market cap in USD
+	•	maxAllocationPercent: the maximum percentage of available SOL to risk per token (for example, 0.2)
+	•	Compute scores (with caps):
+	•	liqScore = the lesser of 1 or tokenLiquidity divided by 50,000
+	•	capScore = the lesser of 1 or tokenMarketCap divided by 500,000
+	•	riskScore = 60% of liqScore plus 40% of capScore
+	•	allocation = availableSol times maxAllocationPercent times riskScore
+	•	Optionally, if tokenLiquidity is less than 1,000 or tokenMarketCap is less than 10,000, skip this token and do not invest.
+
+	3.	Trading Logic:
+
+	•	Monitor token price in real time.
+	•	Automatically sell when the price increases by 20 percent or decreases by 10 percent.
+	•	Let users adjust these thresholds (custom stop-loss and take-profit) per token.
+
+	4.	Trade Confirmation and Resilience:
+
+	•	Add confirmation prompts before executing trades.
+	•	Include retry logic for failed transactions to handle network errors or RPC timeouts.
+
+	5.	User Interface (Homepage and Dashboard):
+
+	•	Display a list of all active watched tokens with the following information:
+	•	Token name
+	•	Amount invested in USD
+	•	Current value in USD
+	•	Token age
+	•	5-minute performance
+	•	1-hour performance
+	•	Liquidity
+	•	Market cap
+	•	Add a dashboard view that shows:
+	•	Total portfolio value
+	•	Overall profit and loss
+	•	Current SOL balance
+	•	Add interactive charts for token performance:
+	•	Start with simple line charts to show 5-minute and 1-hour price trends for each token.
+	•	Candlestick charts may be added in a later iteration after core functionality is stable.
+	•	Create a history page showing all past token trades, including timestamps, buy/sell prices, profit/loss, and trade conditions.
+	•	Include a demo mode with preloaded mock tokens and simulated portfolio data to showcase the app without requiring wallet connection.
+
+	6.	Wallet Integration:
+
+	•	Allow users to connect their Phantom wallet to the app.
+	•	Show clear feedback during wallet connection and transaction signing (e.g., loading indicators, error messages).
+	•	If a backend is used, consider adding session management and multi-factor authentication for security.
+
+	7.	Backend Infrastructure:
+
+	•	Implement a Node.js backend using Express.
+	•	Backend responsibilities:
+	•	Handle all API calls to Helius, Raydium, and optionally Birdeye or DexScreener
+	•	Cache token data to reduce frontend load and external API calls
+	•	Maintain transaction history and log all trades
+	•	Save all fetched token data for long-term analysis and future trading algorithm improvements
+	•	Serve a WebSocket endpoint to push token updates to the frontend
+	•	Optimize WebSocket updates to push only changed data (like price or liquidity), not full token payloads
+	•	Use a task queue (e.g., Bull or RabbitMQ) to handle trade execution asynchronously, supporting high-volume trading without blocking the main thread
+
+	8.	Error Handling and Logging:
+
+	•	Implement detailed logging of trade actions, API errors, and wallet issues.
+	•	Store logs and historical transactions on the backend for user reference and troubleshooting.
+
+	9.	Testing and Simulation:
+
+	•	Include a “paper trading” mode where all trades are simulated using mock SOL balances.
+	•	Let users switch between real and paper trading modes at any time.
+	•	Use simulated price feeds to allow users to test trading strategies and investment logic safely.
+
+Technical Stack:
+	•	Frontend: React (with Tailwind optional)
+	•	Wallet Integration: Phantom wallet using @solana/web3.js
+	•	Backend: Node.js with Express
+	•	Task Queue: Bull or RabbitMQ to manage background jobs (e.g. trade execution)
+	•	WebSocket: Real-time updates with differential broadcasting
+	•	APIs: Helius for token/transaction data, Raydium for trading and liquidity, optionally Birdeye or DexScreener for additional market data
